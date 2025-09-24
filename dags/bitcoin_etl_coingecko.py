@@ -15,7 +15,7 @@ DEFAULT_ARGS = {
 }
 
 
-@task
+@task(retries=0, execution_timeout=timedelta(minutes=10))
 def fetch_bitcoin_history_from_coingecko():
     """
     Coleta dados horários do Bitcoin na janela "ontem"

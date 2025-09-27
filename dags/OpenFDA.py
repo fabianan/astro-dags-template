@@ -12,9 +12,15 @@ import requests
 # Function to generate query URL for a specific month and year
 def generate_query_url(year, month):
     start_date = f"{year}{month:02d}01"
-    end_date = f"{year}{month:02d}{(datetime(year, month, 1) + timedelta(days=31)).replace(day=1) - timedelta(days=1):%d}"
+    # Calcula o próximo mês (ou ano, se dezembro), depois diminui 1 dia
+    if month == 12:
+        last_day = datetime(year + 1, 1, 1) - timedelta(days=1)
+    else:
+        last_day = datetime(year, month + 1, 1) - timedelta(days=1)
+    end_date = last_day.strftime("%Y%m%d")
     query = f"https://api.fda.gov/drug/event.json?search=patient.drug.medicinalproduct:%22sildenafil+citrate%22+AND+receivedate:[{start_date}+TO+{end_date}]&count=receivedate"
     return query
+
 
 # Function to fetch data from the API and save it to XCom
 def fetch_openfda_data(ds, ti, **context):
@@ -92,6 +98,7 @@ save_data_task = PythonOperator(
 )
 
 fetch_data_task >> save_data_task
+
 
 
 

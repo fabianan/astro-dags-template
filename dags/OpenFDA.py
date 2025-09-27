@@ -55,7 +55,7 @@ def save_to_postgresql(ds, ti, **context):
         pg_hook = PostgresHook(postgres_conn_id='postgres')
         engine = pg_hook.get_sqlalchemy_engine()
         # Save the DataFrame to the database
-        df.to_sql('openfda_data', con=engine, if_exists='append', index=False)
+        df.to_sql('openfda_data_fab', con=engine, if_exists='append', index=False)
 
 
 # Define the DAG
@@ -92,5 +92,6 @@ save_data_task = PythonOperator(
 )
 
 fetch_data_task >> save_data_task
+
 
 

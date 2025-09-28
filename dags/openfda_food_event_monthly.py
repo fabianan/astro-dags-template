@@ -1,5 +1,4 @@
 from airflow.decorators import dag, task
-from airflow.utils.dates import days_ago
 from airflow.models import Variable
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
 import pandas as pd
@@ -16,7 +15,7 @@ BASE_URL = "https://api.fda.gov/food/event.json"
 
 @dag(
     schedule_interval="0 0 1 * *",  # Executa no primeiro dia de cada mês
-    start_date=days_ago(1),
+    start_date=pendulum.datetime(2020, 6, 1, tz="UTC")  # Escolha a data desejada),
     catchup=True,
     tags=["openfda", "food", "bigquery", "etl"],
 )

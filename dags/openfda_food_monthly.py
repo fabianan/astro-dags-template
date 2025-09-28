@@ -70,11 +70,12 @@ def openfda_food_monthly():
             results = []
 
         df = pd.DataFrame(results)
+        
         if not df.empty:
             if "time" in df.columns and "date_started" not in df.columns:
                 df = df.rename(columns={"time": "date_started"})
             df = df[["date_started", "count"]].copy()
-            df["date_started"] = df["date_started"].astype(str)
+            df["date_started"] = pd.to_datetime(df["date_started"], format="%Y%m%d", errors="coerce")
             df["count"] = pd.to_numeric(df["count"], errors="coerce").fillna(0).astype(int)
         else:
             df = pd.DataFrame(columns=["date_started", "count"])

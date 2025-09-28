@@ -90,18 +90,17 @@ def openfda_food_monthly():
         if df.empty:
             df = pd.DataFrame(columns=["date_started", "count"])
 
-        hook = BigQueryHook(gcp_conn_id=GCP_CONN_ID, location=BQ_LOCATION)
+        hook = BigQueryHook(gcp_conn_id=GCP_CONN_ID, location=BQ_LOCATION, use_legacy_sql=False)
         client = hook.get_client()
 
-        table_id = f"{GCP_PROJECT}.{BQ_DATASET}.{BQ_TABLE}"
+  #      table_id = f"{GCP_PROJECT}.{BQ_DATASET}.{BQ_TABLE}"
 
-        job = client.load_table_from_dataframe(
-            df,
-            table_id,
-            job_config={"write_disposition": "WRITE_APPEND"},
-            location=BQ_LOCATION,
-        )
-        job.result()
+        df.to_gbq(destination_table=f"{BQ_DATASET}.{BQ_TABLE}",
+              project_id=GCP_PROJECT,
+              if_exists="append",
+              credentials= hook.get_credentials(),
+              location=BQ_LOCATION,
+              progress_bar=False)
 
     fetched = fetch_openfda()
     save_to_bigquery(fetched)

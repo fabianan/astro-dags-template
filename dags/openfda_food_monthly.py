@@ -58,7 +58,7 @@ def openfda_food_monthly():
         fim = prev_month.replace(day=last_day).strftime("%Y%m%d")
 
         base_url = "https://api.fda.gov/food/event.json"
-        search_query = f"date_started:[{inicio}+TO+{fim}]"
+        search_query = f"date_started:[{inicio} TO {fim}]" 
         params = {"search": search_query, "count": "date_started"}
 
         resp = requests.get(base_url, params=params, timeout=60)

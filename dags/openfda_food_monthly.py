@@ -16,12 +16,14 @@ GCP_PROJECT  = "enap-470914"
 BQ_DATASET   = "openfda"                
 BQ_TABLE     = "food_event_reports"  
 BQ_LOCATION  = "US"                       
-GCP_CONN_ID  = "google_cloud_default"      # Airflow connection with a SA that can write to BQ
+GCP_CONN_ID  = "google_cloud_default"    
 # ====================
 
 DEFAULT_ARGS = {
     "email_on_failure": True,
     "owner": "Fabiana Nascimento,Open in Cloud IDE",
+    "retries": 3, 
+    "retry_delay": timedelta(minutes=5), 
 }
 
 DESCRIPTION = (

@@ -15,7 +15,7 @@ BASE_URL = "https://api.fda.gov/food/event.json"
 
 @dag(
     schedule_interval="0 0 1 * *",  # Executa no primeiro dia de cada mês
-    start_date=pendulum.datetime(2020, 6, 1, tz="UTC")  # Escolha a data desejada),
+    start_date=pendulum.datetime(2020, 6, 1, tz="UTC"),  # Escolha a data desejada),
     catchup=True,
     tags=["openfda", "food", "bigquery", "etl"],
 )

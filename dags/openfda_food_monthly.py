@@ -80,6 +80,7 @@ def openfda_food_monthly():
         else:
             df = pd.DataFrame(columns=["date_started", "count"])
 
+        df["date_started"] = df["date_started"].dt.strftime("%Y-%m-%d")
         return df.to_dict(orient="records")
 
     @task(task_id="save_to_bigquery")

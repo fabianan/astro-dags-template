@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import timedelta
 from typing import List, Dict
+from calendar import monthrange
 
 import pendulum
 import pandas as pd
@@ -13,7 +14,7 @@ from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
 # ====== CONFIG ======
 GCP_PROJECT  = "enap-470914"     
 BQ_DATASET   = "openfda"                
-BQ_TABLE     = "food_event_reports"  
+BQ_TABLE     = "food_event_adverse_reports"  
 BQ_LOCATION  = "US"                       
 GCP_CONN_ID  = "google_cloud_default"      # Airflow connection with a SA that can write to BQ
 # ====================
@@ -47,10 +48,12 @@ def openfda_food_monthly():
         Buscar dados do mês anterior na OpenFDA Food API, montar DataFrame e enviar via XCom.
         """
         data_interval_start = context["data_interval_start"]
-        data_interval_end = context["data_interval_end"]
 
-        inicio = data_interval_start.strftime("%Y%m%d")
-        fim = (data_interval_end - timedelta(days=1)).strftime("%Y%m%d")
+        # Primeiro e último dia do mês anterior
+        prev_month = (data_interval_start - timedelta(days=1)).replace(day=1)
+        inicio = prev_month.strftime("%Y%m%d")
+        last_day = monthrange(prev_month.year, prev_month.month)[1]
+        fim = prev_month.replace(day=last_day).strftime("%Y%m%d")
 
         base_url = "https://api.fda.gov/food/event.json"
         search_query = f"date_started:[{inicio}+TO+{fim}]"

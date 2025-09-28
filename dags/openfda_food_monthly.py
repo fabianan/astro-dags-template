@@ -14,7 +14,7 @@ from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
 # ====== CONFIG ======
 GCP_PROJECT  = "enap-470914"     
 BQ_DATASET   = "openfda"                
-BQ_TABLE     = "food_event_adverse_reports"  
+BQ_TABLE     = "food_event_reports"  
 BQ_LOCATION  = "US"                       
 GCP_CONN_ID  = "google_cloud_default"      # Airflow connection with a SA that can write to BQ
 # ====================

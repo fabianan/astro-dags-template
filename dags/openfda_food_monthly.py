@@ -22,7 +22,7 @@ GCP_CONN_ID  = "google_cloud_default"
 DEFAULT_ARGS = {
     "email_on_failure": True,
     "owner": "Fabiana Nascimento,Open in Cloud IDE",
-    "retries": 3, 
+    "retries": 2, 
     "retry_delay": timedelta(minutes=5), 
 }
 
